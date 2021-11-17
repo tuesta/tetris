@@ -35,7 +35,7 @@ mirror = movementM id            flipH pure
 down :: Monad m => Space -> MobilePiece -> ExceptT MobilePiece m MobilePiece
 down = movementM (second succ) id throwE
 
-move :: Monad m => Space -> MobilePiece -> MSF (ExceptT MobilePiece m) Action Space
+move :: Monad m => Space -> MobilePiece -> MSF (ExceptT MobilePiece m) TAction Space
 move s0 mp0 = feedback mp0 $ arrM (fmap (\mp -> (inserts mp s0, mp)) . uncurry go)
   where
     go Left   = left s0
@@ -45,7 +45,7 @@ move s0 mp0 = feedback mp0 $ arrM (fmap (\mp -> (inserts mp s0, mp)) . uncurry g
     go Mirror = mirror s0
     go Down   = down s0
 
-tetris :: (RandomGen g, Monad m) => g -> Int -> Int -> MSF (ExceptT g m) Action Space
+tetris :: (RandomGen g, Monad m) => g -> Int -> Int -> MSF (ExceptT g m) TAction Space
 tetris g0 cols rows = safely $ bucle (initSpace cols rows) (random g0)
   where
     topCenter = (cols - div cols 2 - 1, 0)
@@ -56,5 +56,5 @@ tetris g0 cols rows = safely $ bucle (initSpace cols rows) (random g0)
         then safe . throw . fst . split $ g
         else bucle s' (random g)
 
-game :: (RandomGen g, Monad m) => Int -> Int -> g -> MSF m Action Space
+game :: (RandomGen g, Monad m) => Int -> Int -> g -> MSF m TAction Space
 game cols rows g = catchS (tetris g cols rows) (game cols rows)

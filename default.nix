@@ -20,5 +20,5 @@ in pkgs.haskell-nix.cabalProject {
       ".*.cabal"
       "LICENSE"
     ];
-  compiler-nix-name = "ghc8107";
+  compiler-nix-name = "ghc901";
 }

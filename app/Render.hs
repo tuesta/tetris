@@ -34,11 +34,12 @@ drawSquare r l (x, y) mc = setColor r mc >> SDL.fillRect r (Just square)
       (SDL.V2 l' l')
 
 setColor :: MonadIO m => SDL.Renderer -> Maybe Colour -> m ()
-setColor r Nothing        = SDL.rendererDrawColor r $= SDL.V4 0 0 0 maxBound
-setColor r (Just White)   = SDL.rendererDrawColor r $= SDL.V4 maxBound maxBound maxBound maxBound
-setColor r (Just Red)     = SDL.rendererDrawColor r $= SDL.V4 maxBound 0 0 maxBound
-setColor r (Just Green)   = SDL.rendererDrawColor r $= SDL.V4 0 maxBound 0 maxBound
-setColor r (Just Blue)    = SDL.rendererDrawColor r $= SDL.V4 50 0 maxBound maxBound
-setColor r (Just Yellow)  = SDL.rendererDrawColor r $= SDL.V4 maxBound maxBound 0 maxBound
-setColor r (Just Magenta) = SDL.rendererDrawColor r $= SDL.V4 maxBound 0 maxBound maxBound
-setColor r (Just Cyan)    = SDL.rendererDrawColor r $= SDL.V4 0 maxBound maxBound maxBound
+setColor r Nothing      = SDL.rendererDrawColor r $= SDL.V4 0 0 0 maxBound
+setColor r (Just color) = case color of
+  White   -> SDL.rendererDrawColor r $= SDL.V4 maxBound maxBound maxBound maxBound
+  Red     -> SDL.rendererDrawColor r $= SDL.V4 maxBound 0 0 maxBound
+  Green   -> SDL.rendererDrawColor r $= SDL.V4 0 maxBound 0 maxBound
+  Blue    -> SDL.rendererDrawColor r $= SDL.V4 50 0 maxBound maxBound
+  Yellow  -> SDL.rendererDrawColor r $= SDL.V4 maxBound maxBound 0 maxBound
+  Magenta -> SDL.rendererDrawColor r $= SDL.V4 maxBound 0 maxBound maxBound
+  Cyan    -> SDL.rendererDrawColor r $= SDL.V4 0 maxBound maxBound maxBound
